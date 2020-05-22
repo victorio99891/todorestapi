@@ -22,6 +22,9 @@ public class TaskEntity {
     @Column(name = "ID")
     private Long _taskId;
 
+    @Column(name = "UUID")
+    private String UUID;
+
     @Column(name = "TITLE")
     private String title;
 

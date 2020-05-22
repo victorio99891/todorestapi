@@ -32,41 +32,28 @@ public class TaskController {
         return ResponseEntity.ok(tasks);
     }
 
-    @GetMapping(path = "/{id}")
-    public ResponseEntity<TaskDTO> getTask(@PathVariable("id") String id) {
-        log.debug("Invoke method [getTask] with details: {idPath: " + id + "}");
-        long longId = parseLongId(id);
-        return ResponseEntity.ok(taskService.findById(longId));
+    @GetMapping(path = "/{uuid}")
+    public ResponseEntity<TaskDTO> getTask(@PathVariable("id") String uuid) {
+        log.debug("Invoke method [getTask] with details: {idPath: " + uuid + "}");
+        return ResponseEntity.ok(taskService.findByUUID(uuid));
     }
 
-    @PostMapping(path = "/{id}")
+    @PostMapping
     public ResponseEntity<TaskDTO> addTask(@RequestBody TaskDTO task) {
         log.debug("Invoke method [addTask] with details: {task: " + task.toString() + "}");
         return ResponseEntity.ok(taskService.add(task));
     }
 
-    @PutMapping(path = "/{id}")
-    public ResponseEntity<TaskDTO> modifyTask(@PathVariable("id") String id, @RequestBody TaskDTO task) {
-        log.debug("Invoke method [modifyTask] with details: {idPath: " + id + ", task: " + task.toString() + "}");
-        long longId = parseLongId(id);
-        return ResponseEntity.ok(taskService.modify(longId, task));
+    @PutMapping(path = "/{uuid}")
+    public ResponseEntity<TaskDTO> modifyTask(@PathVariable("uuid") String uuid, @RequestBody TaskDTO task) {
+        log.debug("Invoke method [modifyTask] with details: {uuidPath: " + uuid + ", task: " + task.toString() + "}");
+        return ResponseEntity.ok(taskService.modify(uuid, task));
     }
 
-    @DeleteMapping(path = "/{id}")
-    public ResponseEntity<Boolean> deleteTask(@PathVariable("id") String id) {
-        log.debug("Invoke method [deleteTask] with details: {idPath: " + id + "}");
-        long longId = parseLongId(id);
-        return ResponseEntity.ok(taskService.delete(longId));
-    }
-
-    private Long parseLongId(@PathVariable("id") String id) {
-        long longId;
-        try {
-            longId = Long.parseLong(id);
-        } catch (Exception e) {
-            throw new TaskException("Unable to parse ID to Long: " + id);
-        }
-        return longId;
+    @DeleteMapping(path = "/{uuid}")
+    public ResponseEntity<Boolean> deleteTask(@PathVariable("uuid") String uuid) {
+        log.debug("Invoke method [deleteTask] with details: {uuidPath: " + uuid + "}");
+        return ResponseEntity.ok(taskService.delete(uuid));
     }
 
 }

@@ -16,6 +16,8 @@ public class TaskDTO {
 
     private Long _taskId;
 
+    private String UUID;
+
     private String title;
 
     private String details;

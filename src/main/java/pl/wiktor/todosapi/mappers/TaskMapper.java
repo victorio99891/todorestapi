@@ -10,6 +10,7 @@ public interface TaskMapper {
     static TaskBO fromDTOtoBO(TaskDTO taskDTO) {
         return TaskBO.builder()
                 ._taskId(taskDTO.get_taskId())
+                .UUID(taskDTO.getUUID())
                 .title(taskDTO.getTitle())
                 .details(taskDTO.getDetails())
                 .taskStatus(taskDTO.getTaskStatus() != null ? EnumStringFinder.findTaskStatus(taskDTO.getTaskStatus()) : null)
@@ -21,6 +22,7 @@ public interface TaskMapper {
     static TaskDTO fromBOtoDTO(TaskBO taskBO) {
         return TaskDTO.builder()
                 ._taskId(taskBO.get_taskId())
+                .UUID(taskBO.getUUID())
                 .title(taskBO.getTitle())
                 .details(taskBO.getDetails())
                 .taskStatus(taskBO.getTaskStatus().name())
@@ -32,6 +34,7 @@ public interface TaskMapper {
     static TaskEntity fromBOToEntity(TaskBO taskBO) {
         return TaskEntity.builder()
                 ._taskId(taskBO.get_taskId())
+                .UUID(taskBO.getUUID())
                 .title(taskBO.getTitle())
                 .details(taskBO.getDetails())
                 .taskStatus(taskBO.getTaskStatus())
@@ -43,6 +46,7 @@ public interface TaskMapper {
     static TaskBO fromEntityToBO(TaskEntity taskEntity) {
         return TaskBO.builder()
                 ._taskId(taskEntity.get_taskId())
+                .UUID(taskEntity.getUUID())
                 .title(taskEntity.getTitle())
                 .details(taskEntity.getDetails())
                 .taskStatus(taskEntity.getTaskStatus())

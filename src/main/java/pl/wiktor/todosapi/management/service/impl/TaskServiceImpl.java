@@ -13,6 +13,7 @@ import pl.wiktor.todosapi.persistance.repository.TaskRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -60,10 +61,22 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    public TaskDTO findByUUID(String uuid) {
+        final TaskDTO task = TaskMapper.fromBOtoDTO(
+                TaskMapper.fromEntityToBO(
+                        taskRepository.findByUUID(uuid).orElseThrow(() -> new TaskException("Cannot find Task with UUID: " + uuid))
+                )
+        );
+        log.debug("Fetched data: " + task.toString());
+        return task;
+    }
+
+    @Override
     public TaskDTO add(TaskDTO taskDTO) {
         TaskBO incoming = TaskMapper.fromDTOtoBO(taskDTO);
 
         TaskEntity entity = TaskEntity.builder()
+                .UUID(UUID.randomUUID().toString())
                 .title(incoming.getTitle().toUpperCase())
                 .details(incoming.getDetails())
                 .taskStatus(incoming.getTaskStatus())
@@ -82,9 +95,9 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public TaskDTO modify(Long id, TaskDTO taskDTO) {
-        TaskEntity current = taskRepository.findById(id).orElseThrow(() ->
-                new TaskException("Cannot find Task with ID: " + id)
+    public TaskDTO modify(String uuid, TaskDTO taskDTO) {
+        TaskEntity current = taskRepository.findByUUID(uuid).orElseThrow(() ->
+                new TaskException("Cannot find Task with UUID: " + uuid)
         );
 
         TaskBO modified = TaskMapper.fromDTOtoBO(taskDTO);
@@ -102,9 +115,9 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public boolean delete(Long id) {
-        final TaskEntity entity = taskRepository.findById(id).orElseThrow(() ->
-                new TaskException("Cannot find Task with ID: " + id)
+    public boolean delete(String uuid) {
+        final TaskEntity entity = taskRepository.findByUUID(uuid).orElseThrow(() ->
+                new TaskException("Cannot find Task with UUID: " + uuid)
         );
         taskRepository.delete(entity);
         log.debug("Deleted data: " + entity.toString());

@@ -12,9 +12,11 @@ public interface TaskService {
 
     TaskDTO findById(Long id);
 
+    TaskDTO findByUUID(String uuid);
+
     TaskDTO add(TaskDTO taskDTO);
 
-    TaskDTO modify(Long id, TaskDTO taskDTO);
+    TaskDTO modify(String uuid, TaskDTO taskDTO);
 
-    boolean delete(Long id);
+    boolean delete(String uuid);
 }
